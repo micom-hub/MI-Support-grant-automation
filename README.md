@@ -39,3 +39,32 @@ Searches are configured in grant-geter/config.yaml, with supported fields for se
 ## Deduplication
 
 There is a SQLite database stored under grant-getter/state/. This contains the bootstrapped results (the grant opportunities that existed on 10/19/26 when this was initialized), and appends results to this as they are identified by subsequent searches
+
+## Resetting the bootstrapped database
+
+Running the following from the grant-getter directory...
+```{bash}
+python -m grant_getter \
+  --database state/production.sqlite3 \
+  bootstrap
+```
+
+... will reset the sqlite database that determines what has "already been seen" by the RSS feed. This could be useful if you are restircing/resetting search terms. You can then check stored opportunities and published opportunities with
+```{bash}
+sqlite3 state/production.sqlite3 \
+  'SELECT COUNT(*) FROM opportunities;'
+#and
+sqlite3 state/production.sqlite3 \
+  'SELECT COUNT(*) FROM feed_items;'
+# View bootstrap metadata
+sqlite3 -header -column state/production.sqlite3 '
+SELECT key, value
+FROM metadata
+ORDER BY key;
+'
+# Test a run:
+python -m grant_getter \
+  --database state/production.sqlite3 \
+  run
+# You should expect it to output "Found 0 previously unseen oppotunities."
+```
