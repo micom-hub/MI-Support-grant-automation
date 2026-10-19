@@ -1,0 +1,6 @@
+[submodule "grant-getter-feed"]
+	path = grant-getter-feed
+	url = https://github.com/micom-hub/grant-getter-feed
+[submodule "grant-getter"]
+	path = grant-getter
+	url = https://github.com/micom-hub/grant-getter
